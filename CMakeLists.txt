@@ -15,7 +15,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DOS_OBJECT_USE_OBJC=0")
 endif()
 
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c++11 -Wall -Wextra -Wno-unused-parameter")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wno-unused-parameter")
 
 find_package(ZeroMQ)
@@ -107,6 +107,6 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/NodeConfig.h"
 
 # For the examples to find this and only this version of Node
 set(Node_DIR ${CMAKE_CURRENT_BINARY_DIR})
-add_subdirectory(Examples)
-add_subdirectory(Testing)
+#add_subdirectory(Examples)
+#add_subdirectory(Testing)
 

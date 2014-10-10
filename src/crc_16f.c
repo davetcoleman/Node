@@ -12,7 +12,7 @@
  * Compile with -DMAKETAB to print values for crctab to stdout
  */
 
-#include "crc.h"
+#include <Node/crc.h>
 
     /* the CRC polynomial. This is used by XMODEM (almost CCITT).
      * If you change P, you must change crctab[]'s initial value to what is
