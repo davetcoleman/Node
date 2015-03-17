@@ -21,7 +21,6 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare")
 
 find_package(ZeroMQ REQUIRED)
-find_package(ZeroMQPP REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(GFlags REQUIRED)
 find_package(GLog REQUIRED)
@@ -40,7 +39,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/NodeConfig.h.in
 set(PROJ_INCLUDE_DIRS
   ${CMAKE_BINARY_DIR}
   ${ZeroMQ_INCLUDE_DIRS}
-  ${ZeroMQPP_INCLUDE_DIRS}
   ${Avahi_INCLUDE_DIRS}
   ${PROTOBUF_INCLUDE_DIRS}
   ${Node_BINARY_DIR}
@@ -52,7 +50,6 @@ set(PROJ_INCLUDE_DIRS
 set(PROJ_LIBRARIES
   ${PROTOBUF_LIBRARY}
   ${ZeroMQ_LIBRARIES}
-  ${ZeroMQPP_LIBRARIES}
   ${Avahi_LIBRARIES}
   ${GFlags_LIBRARIES}
   ${GLog_LIBRARIES}
@@ -88,7 +85,6 @@ set(EXPORT_NODE_INC
   ${CMAKE_CURRENT_BINARY_DIR}
   ${PROTOBUF_INCLUDE_DIRS}
   ${ZeroMQ_INCLUDE_DIRS}
-  ${ZeroMQPP_INCLUDE_DIRS}
   ${GFlags_INCLUDE_DIRS}
   ${GLog_INCLUDE_DIRS}
   )
@@ -99,16 +95,19 @@ def_library(${LIBRARY_NAME}
   PACKAGE Node
   )
 
-export_package(Node
-  TARGETS ${LIBRARY_NAME}
-  LIBRARY ${LIBRARY_NAME}
-  LIBRARIES ${LIBRARY_NAME}
-  INCLUDE_DIRS ${EXPORT_NODE_INC}
-  )
+# do not export package if building from brew
+if( USE_CMAKE_EXPORT_PACKAGE )
+   export_package(Node
+     TARGETS ${LIBRARY_NAME}
+     LIBRARY ${LIBRARY_NAME}
+     LIBRARIES ${LIBRARY_NAME}
+     INCLUDE_DIRS ${EXPORT_NODE_INC}
+    )
+endif()
 
 # For the examples to find this and only this version of Node
 set(Node_DIR ${CMAKE_CURRENT_BINARY_DIR})
-add_subdirectory(examples)
+#add_subdirectory(examples)
 
 # add_subdirectory(testing)
 
