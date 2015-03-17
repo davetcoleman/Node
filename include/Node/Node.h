@@ -43,7 +43,7 @@
 #include <NodeConfig.h>
 #include <NodeMessages.pb.h>
 #include <Node/ZeroConf.h>
-#include <zmqpp/zmqpp.hpp>
+#include <Node/zmq.hpp>
 
 namespace node { class node; }
 
@@ -53,7 +53,7 @@ extern std::vector<node::node*> g_vNodes;
 namespace node {
 
 struct TimedNodeSocket;
-typedef std::shared_ptr<zmqpp::socket> NodeSocket;
+typedef std::shared_ptr<zmq::socket_t> NodeSocket;
 
 typedef void(*FuncPtr)(google::protobuf::Message&,
                        google::protobuf::Message&,
@@ -144,7 +144,7 @@ class node {
   /// Input: Message to send
   bool publish(const std::string& topic,
                const google::protobuf::Message&  msg);
-  bool publish(const std::string& topic, zmqpp::message& msg);
+  bool publish(const std::string& topic, zmq::message_t& msg);
   bool publish(const std::string& topic, const std::string& msg);
 
   /// Subscribe to a topic being advertised by another node
@@ -161,14 +161,14 @@ class node {
   /// @param [in] msg: The message to send
   bool send(const std::string& listener, const std::string& msg);
   bool send(const std::string& listener, const google::protobuf::Message& msg);
-  bool send(const std::string& listener, zmqpp::message* msg);
+  bool send(const std::string& listener, zmq::message_t* msg);
 
   /// Consume data from publisher
   /// Input: Node resource: "NodeName/Topic"
   /// Output: Message read
   bool receive(const std::string& resource, google::protobuf::Message& msg);
   bool receive(const std::string& resource, std::string* msg);
-  bool receive(const std::string& resource, zmqpp::message& zmq_msg);
+  bool receive(const std::string& resource, zmq::message_t& zmq_msg);
 
   template<class Callbackmsg>
   bool register_callback(const std::string &resource, TopicCallback func);
@@ -325,7 +325,7 @@ class node {
 
  private:
   // ZMQ context. Must be initialized first and destroyed last.
-  std::unique_ptr<zmqpp::context> context_;
+  std::unique_ptr<zmq::context_t> context_;
 
   // NB a "resource" is a nodename, node/rpc or node/topic URL
   // resource to host:port map
